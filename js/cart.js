@@ -1,8 +1,7 @@
 const cart = () => {
   const cartBtn = document.querySelector('.button-cart');
-  const cart = document.querySelector('#modal-cart'); //modal-close
+  const cart = document.querySelector('#modal-cart');
   const closeBtn = cart.querySelector('.modal-close');
-  const overlay = document.querySelector('.overlay');
 
   cartBtn.addEventListener('click', () => {
     cart.style.display = 'flex';
@@ -11,7 +10,7 @@ const cart = () => {
   closeBtn.addEventListener('click', () => {
     cart.style.display = '';
   });
-
+  //close popup by click to overlay
   cart.addEventListener('click', (e) => {
     if (!e.target.closest('.modal')) {
       cart.style.display = '';
