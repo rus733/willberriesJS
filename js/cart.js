@@ -16,6 +16,12 @@ const cart = () => {
     if (!e.target.closest('.modal')) {
       cart.style.display = '';
     }
+    //add close popup by key "Escape"
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        cart.style.display = '';
+      }
+    });
   });
 };
 cart();
