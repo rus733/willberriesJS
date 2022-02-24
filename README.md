@@ -5,3 +5,4 @@
 - JavaScript
 - НТМL
 - CSS
+- WebPack
