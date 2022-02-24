@@ -11,12 +11,12 @@ const getGoods = () => {
       //но нам нужен обьект , поэтому используем метод json().массив с данными
 
       .then((data) => {
-        console.log('data: ', data); //дата получено с сервера
-        //дата кладем в локалСторедж, преобразовав в строку
+        console.log('data: ', data); //data получено с сервера
+        //data кладем в локалСторедж, преобразовав в строку
         localStorage.setItem('data', JSON.stringify(data));
-        //теперь извлекли из локалСторедж
+        //теперь извлекли из локалСторедж преобразовав в массив
         const dataLocal = JSON.parse(localStorage.getItem('data'));
-        console.log(dataLocal); //совпадают полностью с полученными из сервера
+        console.log(dataLocal); //совпадают полностью с data полученными из сервера Firebase
       });
   };
 
