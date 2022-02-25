@@ -15,10 +15,16 @@ const getGoods = () => {
       //совпадают полностью с data полученными из сервера Firebase
 
       .then((data) => {
-        //применим метод фильтр
+        //применим метод фильтр, отфильтруем по категориям товары
         const array = data.filter((item) => item[category] === value);
 
-        localStorage.setItem('goods', JSON.stringify(array));
+        //если категория присутствует мы занесем в локалсторедж отфильтрованную дату в виде аррай , если категории нет , мы заносим весь список , т.е. не фильтрованную дата
+
+        if (category) {
+          localStorage.setItem('goods', JSON.stringify(array));
+        } else {
+          localStorage.setItem('goods', JSON.stringify(data));
+        }
       });
   };
 
