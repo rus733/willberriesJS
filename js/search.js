@@ -37,9 +37,7 @@ const search = () => {
       .then((response) => response.json()) //ответ в виде обьекта response
       .then((data) => {
         // мы присваиваем переменной array значение data
-        const array = data.filter((good) => {
-          return good.name.toLowerCase().includes(value.toLowerCase());
-        });
+        const array = data.filter((good) => good.name.toLowerCase().includes(value.toLowerCase()));
         //console.log(value);
         localStorage.setItem('goods', JSON.stringify(array));
         // а   если мы на странице goods то нам нужно получать данные и отрисовывать их
