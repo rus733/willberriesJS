@@ -9,7 +9,7 @@ const search = () => {
     });
   } catch (e) {
     console.log('верните класс кнопки ', e);
-    console.log(e.message);
+    console.dir(e);
     console.error(e.message);
     console.error('Уважаемый верстальщик , верните класс пожалуйста');
   }
