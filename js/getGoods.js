@@ -1,5 +1,10 @@
 const getGoods = () => {
   const links = document.querySelectorAll('.navigation-link');
+
+  const renderGoods = (goods) => {
+    console.log(goods);
+  };
+
   const getData = (value, category) => {
     //подключимся и получим данные с сервера
     fetch('https://test-willber-default-rtdb.firebaseio.com/db.json')
@@ -19,6 +24,10 @@ const getGoods = () => {
         //если категория присутствует в верстке  мы фильтруем  data  , если категории нет (undefined) , мы присваиваем переменной array полный список data
         const array = category ? data.filter((item) => item[category] === value) : data;
         localStorage.setItem('goods', JSON.stringify(array));
+
+        // свойство window.location.href для переххода на другую страницу
+        window.location.href = '/goods.html';
+        console.log(window.location.href);
       });
   };
 
