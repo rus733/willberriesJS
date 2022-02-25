@@ -16,15 +16,9 @@ const getGoods = () => {
 
       .then((data) => {
         //применим метод фильтр, отфильтруем по категориям товары
-        const array = data.filter((item) => item[category] === value);
-
-        //если категория присутствует мы занесем в локалсторедж отфильтрованную дату в виде аррай , если категории нет , мы заносим весь список , т.е. не фильтрованную дата
-
-        if (category) {
-          localStorage.setItem('goods', JSON.stringify(array));
-        } else {
-          localStorage.setItem('goods', JSON.stringify(data));
-        }
+        //если категория присутствует в верстке  мы фильтруем  data  , если категории нет (undefined) , мы присваиваем переменной array полный список data
+        const array = category ? data.filter((item) => item[category] === value) : data;
+        localStorage.setItem('goods', JSON.stringify(array));
       });
   };
 
