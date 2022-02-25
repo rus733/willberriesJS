@@ -1,29 +1,36 @@
 const getGoods = () => {
   const links = document.querySelectorAll('.navigation-link');
-  //console.log('links: ', links);
-
-  const getData = () => {
+  const getData = (value, category) => {
     //подключимся и получим данные с сервера
     fetch('https://test-willber-default-rtdb.firebaseio.com/db.json')
       .then((response) => response.json()) //ответ в виде обьекта response
       //чтобы извлечь данные применим метод json()
       //можно использовать метод text(), ответ придет в виде одной строки
       //но нам нужен обьект , поэтому используем метод json().массив с данными
+      //data получено с сервера
+      //data кладем в локалСторедж, преобразовав в строку с ключом goods
+      //теперь извлекли из локалСторедж преобразовав в массив
+      // const dataLocal = JSON.parse(localStorage.getItem('goods'));
+      //   console.log('dataLocal: ', dataLocal);
+      //совпадают полностью с data полученными из сервера Firebase
 
       .then((data) => {
-        console.log('data: ', data); //data получено с сервера
-        //data кладем в локалСторедж, преобразовав в строку
-        localStorage.setItem('data', JSON.stringify(data));
-        //теперь извлекли из локалСторедж преобразовав в массив
-        const dataLocal = JSON.parse(localStorage.getItem('data'));
-        console.log(dataLocal); //совпадают полностью с data полученными из сервера Firebase
+        //применим метод фильтр
+        const array = data.filter((item) => item[category] === value);
+
+        localStorage.setItem('goods', JSON.stringify(array));
       });
   };
 
   links.forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      getData(e.target.textContent);
+      const linkValue = link.textContent;
+      //извлечем из верстки значение атрибута data-field равное иди gender или category
+      //  при помощи метода dataset
+      const category = link.dataset.field;
+
+      getData(linkValue, category);
     });
   });
 
