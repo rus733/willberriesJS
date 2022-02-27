@@ -6,13 +6,13 @@ export const getGoods = () => {
     //получим контейнер наших карточек
     const goodsContainer = document.querySelector('.long-goods-list');
 
-    goodsContainer.innerHTML = ''; //уберем все карточки из верстки
+    goodsContainer.innerHTML = ''; //уберем все карточки из верстки чтобы новые не добавлялись к имеющимся
 
-    //переберем все товары из  массива
+    //переберем все товары из  массива goods и создадим карточки товаров для каждого элемента  good
     goods.forEach((good) => {
-      // теперь создадим элемент , новый блок
+      //  создадим элемент , новый блок
       const goodBlock = document.createElement('div');
-
+      // добавим ему классы из нашей верстки
       goodBlock.classList.add('col-lg-3');
       goodBlock.classList.add('col-sm-6');
       //теперь в этот блок запишем верстку каждой карточки товара
@@ -28,7 +28,9 @@ export const getGoods = () => {
                 </button>
             </div>          
       `;
+      //в контейнер добавим новую карточку - элемент - блок
       goodsContainer.append(goodBlock);
+      // и так для каждого элемента полученного в аргумент массива
     });
   };
 
