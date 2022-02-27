@@ -1,5 +1,6 @@
 export const getGoods = () => {
   const links = document.querySelectorAll('.navigation-link');
+  const more = document.querySelectorAll('.more'); //buton All-view
 
   const renderGoods = (goods) => {
     //получим контейнер наших карточек
@@ -80,6 +81,12 @@ export const getGoods = () => {
   // если чтото есть в локолстор  под ключом гуудс  и страница goods.html' то запускаем рендер
   if (localStorage.getItem('goods') && window.location.pathname === '/goods.html') {
     renderGoods(JSON.parse(localStorage.getItem('goods')));
+  }
+
+  if (more) {
+    more.addEventListener('click', () => {
+      console.log(1212121);
+    });
   }
 
   //обратимся к глобальному  обьекту localStorage
