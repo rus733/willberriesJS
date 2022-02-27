@@ -14,6 +14,4 @@ export const slider = () => {
       prevEl: '.slider-button-prev',
     },
   });
-
-  console.log(swiper);
 };

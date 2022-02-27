@@ -1,6 +1,6 @@
 export const getGoods = () => {
   const links = document.querySelectorAll('.navigation-link');
-  const more = document.querySelectorAll('.more'); //buton All-view
+  const more = document.querySelector('.more'); //buton All-view
 
   const renderGoods = (goods) => {
     //получим контейнер наших карточек
