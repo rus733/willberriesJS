@@ -82,10 +82,11 @@ export const getGoods = () => {
   if (localStorage.getItem('goods') && window.location.pathname === '/goods.html') {
     renderGoods(JSON.parse(localStorage.getItem('goods')));
   }
-
+  // added homework connect button wievAll in site imdex.html
   if (more) {
-    more.addEventListener('click', () => {
-      console.log(1212121);
+    more.addEventListener('click', (e) => {
+      e.preventDefault();
+      getData();
     });
   }
 
