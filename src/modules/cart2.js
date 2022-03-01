@@ -48,18 +48,7 @@ export const cart = () => {
     const clickedGood = goods.find((good) => good.id === id);
     // проверим , есть ли корзина в локал сторедж , если есть считаем ее , если нет образуем ее в виде пустого массива
     const cart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
-
-    //нужно определить  есть ли в корзине товар , если нет , то внести его в корзину - э "cart"в локал сторедж , а если  есть то увеличить количество на 1
-    //переберем корзину методом перебора some
-    //он работает анлогично find и filter
-    //но сравниваем перебираемые им товары на совпадение id c id кликнутого товара
-    // если в  корзине этого товара нет , то сравнение дает false
-    //console.log(cart.some((good) => good.id === clickedGood.id));
-    //поэтому задаем условие
     if (cart.some((good) => good.id === clickedGood.id)) {
-      //console.log('увеличить колво товара clickedGood');
-      // чтобы увеличить количество однотипного товара в корзине ,
-      //нужно перебрать корзину , сделаем это с методом map
       // перебираем все товары и возвращаем их
       cart.map((good) => {
         if (good.id === clickedGood.id) {
@@ -68,18 +57,15 @@ export const cart = () => {
         return good;
       });
     } else {
-      //console.log('добавить в корзину  товар clickedGood');
       clickedGood.count = 1;
       cart.push(clickedGood);
     }
     //запишем изменения в локал сторедж
     localStorage.setItem('cart', JSON.stringify(cart));
   };
-
   const renderCartGoods = (goods) => {
     cartTable.innerHTML = '';
-    //переберем массив goods из корзины(локал сторедж) и
-    //сформируем верстку
+    //переберем массив goods из корзины(локал сторедж) и сформируем верстку
     goods.forEach((good) => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
