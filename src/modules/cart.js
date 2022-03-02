@@ -7,7 +7,7 @@ export const cart = () => {
   const cartTable = document.querySelector('.cart-table__goods');
   const modalForm = document.querySelector('.modal-form');
   const cardTableTotal = document.querySelector('.cart-table__total');
-  let sum = 0; //обозначим сумму товаров в корзине
+  let sum = 0; //переменная сумма товаров в корзине
 
   const getFromStorage = (name) => {
     return localStorage.getItem(name) ? JSON.parse(localStorage.getItem(name)) : [];
@@ -19,8 +19,6 @@ export const cart = () => {
     cart.forEach((item) => {
       return (sum += Number(item.price) * Number(item.count));
     });
-
-    //cardTableTotal.textContent = String(sum);
     cardTableTotal.textContent = `${sum}$`;
   };
 
@@ -86,8 +84,6 @@ export const cart = () => {
   // рендер
   const renderCartGoods = (goods) => {
     cartTable.innerHTML = '';
-    //totalSum = 0;
-    //let totalSum = 0; //обозначим сумму товаров в корзине
     //переберем массив goods из корзины(локал сторедж) и сформируем верстку
     goods.forEach((good) => {
       const tr = document.createElement('tr');
