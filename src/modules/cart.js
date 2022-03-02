@@ -7,7 +7,22 @@ export const cart = () => {
   const cartTable = document.querySelector('.cart-table__goods');
   const modalForm = document.querySelector('.modal-form');
   const cardTableTotal = document.querySelector('.cart-table__total');
-  let totalSum = 0; //обозначим сумму товаров в корзине
+  let sum = 0; //обозначим сумму товаров в корзине
+
+  const getFromStorage = (name) => {
+    return localStorage.getItem(name) ? JSON.parse(localStorage.getItem(name)) : [];
+  };
+
+  const updateSum = () => {
+    const cart = getFromStorage('cart');
+    sum = 0;
+    cart.forEach((item) => {
+      return (sum += Number(item.price) * Number(item.count));
+    });
+
+    //cardTableTotal.textContent = String(sum);
+    cardTableTotal.textContent = `${sum}$`;
+  };
 
   const deleteCartItem = (id) => {
     const cart = JSON.parse(localStorage.getItem('cart'));
@@ -34,7 +49,7 @@ export const cart = () => {
     const cart = JSON.parse(localStorage.getItem('cart'));
     const newCart = cart.map((good) => {
       if (good.id === id) {
-        if (good.count > 0) {
+        if (good.count > 1) {
           good.count--;
         }
       }
@@ -50,7 +65,8 @@ export const cart = () => {
     //для поиска кликнутого товарар воспользумся методом find
     const clickedGood = goods.find((good) => good.id === id);
     // проверим , есть ли корзина в локал сторедж , если есть считаем ее , если нет образуем ее в виде пустого массива
-    const cart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+    //const cart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) //: [];
+    const cart = getFromStorage('cart');
     if (cart.some((good) => good.id === clickedGood.id)) {
       // перебираем все товары и возвращаем их
       cart.map((good) => {
@@ -70,7 +86,7 @@ export const cart = () => {
   // рендер
   const renderCartGoods = (goods) => {
     cartTable.innerHTML = '';
-    totalSum = 0;
+    //totalSum = 0;
     //let totalSum = 0; //обозначим сумму товаров в корзине
     //переберем массив goods из корзины(локал сторедж) и сформируем верстку
     goods.forEach((good) => {
@@ -96,13 +112,14 @@ export const cart = () => {
         }
       });
       //подсчет суммы товаров в корзине
-      return (totalSum = totalSum + +good.price * +good.count);
+      //return (totalSum = totalSum + Number(good.price) * Number(good.count));
     });
 
-    if (cardTableTotal) {
-      cardTableTotal.textContent = `${totalSum}$`;
-    }
-    return totalSum;
+    // if (cardTableTotal) {
+    //   cardTableTotal.textContent = `${totalSum}$`;
+    // }
+    // return totalSum;
+    updateSum();
   };
 
   // ф отправки форм
@@ -111,6 +128,11 @@ export const cart = () => {
     const cartArray = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
     const inputName = modalForm.querySelector('[name = "nameCustomer"]');
     const inputPhone = modalForm.querySelector('[name = "phoneCustomer"]');
+    // let inputName = document.getElementsByName('nameCustomer'); //[0] as HTMLInputElement;
+    // console.log(' inputName: ', inputName[0].value);
+
+    // let inputPhone = document.getElementsByName('phoneCustomer'); //[0] as HTMLInputElement);
+    // console.log('inputPhone: ', inputPhone[0].value);
 
     fetch('https://jsonplaceholder.typicode.com/posts', {
       method: 'POST',
@@ -118,7 +140,7 @@ export const cart = () => {
         cart: cartArray,
         name: inputName.value,
         phone: inputPhone.value,
-        total: totalSum,
+        total: sum,
       }),
     }).then(() => {
       setTimeout(() => {
@@ -127,7 +149,7 @@ export const cart = () => {
       }, 3000);
       inputName.value = '';
       inputPhone.value = '';
-      totalSum = 0;
+      sum = 0;
     });
   };
 
@@ -154,6 +176,12 @@ export const cart = () => {
   cart.addEventListener('click', (e) => {
     //добавили , чтоб не закрывалась корзина && e.target.classList.contains('overlay')
     if (!e.target.closest('.modal') && e.target.classList.contains('overlay')) {
+      cart.style.display = '';
+    }
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
       cart.style.display = '';
     }
   });
