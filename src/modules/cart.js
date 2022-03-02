@@ -2,12 +2,11 @@ export const cart = () => {
   const cartBtn = document.querySelector('.button-cart');
   const cart = document.querySelector('#modal-cart');
   const closeBtn = cart.querySelector('.modal-close');
-  //контейнер в котором сформированы карточки
   const goodsContainer = document.querySelector('.long-goods-list');
   const cartTable = document.querySelector('.cart-table__goods');
   const modalForm = document.querySelector('.modal-form');
   const cardTableTotal = document.querySelector('.cart-table__total');
-  let sum = 0; //переменная сумма товаров в корзине
+  let sum = 0;
 
   const getFromStorage = (name) => {
     return localStorage.getItem(name) ? JSON.parse(localStorage.getItem(name)) : [];
@@ -60,13 +59,9 @@ export const cart = () => {
 
   const addToCart = (id) => {
     const goods = JSON.parse(localStorage.getItem('goods'));
-    //для поиска кликнутого товарар воспользумся методом find
     const clickedGood = goods.find((good) => good.id === id);
-    // проверим , есть ли корзина в локал сторедж , если есть считаем ее , если нет образуем ее в виде пустого массива
-    //const cart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) //: [];
     const cart = getFromStorage('cart');
     if (cart.some((good) => good.id === clickedGood.id)) {
-      // перебираем все товары и возвращаем их
       cart.map((good) => {
         if (good.id === clickedGood.id) {
           good.count++;
@@ -77,14 +72,11 @@ export const cart = () => {
       clickedGood.count = 1;
       cart.push(clickedGood);
     }
-    //запишем изменения в локал сторедж
     localStorage.setItem('cart', JSON.stringify(cart));
   };
 
-  // рендер
   const renderCartGoods = (goods) => {
     cartTable.innerHTML = '';
-    //переберем массив goods из корзины(локал сторедж) и сформируем верстку
     goods.forEach((good) => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
@@ -108,11 +100,9 @@ export const cart = () => {
         }
       });
     });
-    //подсчет суммы товаров в корзине
     updateSum();
   };
 
-  // ф отправки форм на тестовое апи весь обьект карт
   const sendForm = () => {
     const cartArray = getFromStorage('cart');
     const inputName = modalForm.querySelector('[name = "nameCustomer"]');
@@ -136,15 +126,14 @@ export const cart = () => {
       sum = 0;
     });
   };
-  // кнопка отправки формы
+  // button send Form
   modalForm.addEventListener('submit', (e) => {
     e.preventDefault();
     sendForm();
   });
-  //при открытии мобильного окна , необходимо вносить с таблицу данные из cart в localStoredg
   cartBtn.addEventListener('click', () => {
-    const cartArray = getFromStorage('cart'); //получим данные из localStorage
-    renderCartGoods(cartArray); //рендер товара в корзинеиз локал сторедж
+    const cartArray = getFromStorage('cart');
+    renderCartGoods(cartArray);
     cart.style.display = 'flex';
   });
   //close popup
@@ -153,7 +142,6 @@ export const cart = () => {
   });
   //close popup by click to overlay
   cart.addEventListener('click', (e) => {
-    //добавили , чтоб не закрывалась корзина && e.target.classList.contains('overlay')
     if (!e.target.closest('.modal') && e.target.classList.contains('overlay')) {
       cart.style.display = '';
     }
