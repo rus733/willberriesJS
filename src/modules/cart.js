@@ -2,9 +2,12 @@ export const cart = () => {
   const cartBtn = document.querySelector('.button-cart');
   const cart = document.querySelector('#modal-cart');
   const closeBtn = cart.querySelector('.modal-close');
-  const goodsContainer = document.querySelector('.long-goods-list'); //контейнер в котором сформированы карточки
+  //контейнер в котором сформированы карточки
+  const goodsContainer = document.querySelector('.long-goods-list');
   const cartTable = document.querySelector('.cart-table__goods');
   const modalForm = document.querySelector('.modal-form');
+  const cardTableTotal = document.querySelector('.cart-table__total');
+  let totalSum = 0; //обозначим сумму товаров в корзине
 
   const deleteCartItem = (id) => {
     const cart = JSON.parse(localStorage.getItem('cart'));
@@ -48,18 +51,7 @@ export const cart = () => {
     const clickedGood = goods.find((good) => good.id === id);
     // проверим , есть ли корзина в локал сторедж , если есть считаем ее , если нет образуем ее в виде пустого массива
     const cart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
-
-    //нужно определить  есть ли в корзине товар , если нет , то внести его в корзину - э "cart"в локал сторедж , а если  есть то увеличить количество на 1
-    //переберем корзину методом перебора some
-    //он работает анлогично find и filter
-    //но сравниваем перебираемые им товары на совпадение id c id кликнутого товара
-    // если в  корзине этого товара нет , то сравнение дает false
-    //console.log(cart.some((good) => good.id === clickedGood.id));
-    //поэтому задаем условие
     if (cart.some((good) => good.id === clickedGood.id)) {
-      //console.log('увеличить колво товара clickedGood');
-      // чтобы увеличить количество однотипного товара в корзине ,
-      //нужно перебрать корзину , сделаем это с методом map
       // перебираем все товары и возвращаем их
       cart.map((good) => {
         if (good.id === clickedGood.id) {
@@ -68,7 +60,6 @@ export const cart = () => {
         return good;
       });
     } else {
-      //console.log('добавить в корзину  товар clickedGood');
       clickedGood.count = 1;
       cart.push(clickedGood);
     }
@@ -76,10 +67,12 @@ export const cart = () => {
     localStorage.setItem('cart', JSON.stringify(cart));
   };
 
+  // рендер
   const renderCartGoods = (goods) => {
     cartTable.innerHTML = '';
-    //переберем массив goods из корзины(локал сторедж) и
-    //сформируем верстку
+    totalSum = 0;
+    //let totalSum = 0; //обозначим сумму товаров в корзине
+    //переберем массив goods из корзины(локал сторедж) и сформируем верстку
     goods.forEach((good) => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
@@ -102,27 +95,45 @@ export const cart = () => {
           deleteCartItem(good.id);
         }
       });
+      //подсчет суммы товаров в корзине
+      return (totalSum = totalSum + +good.price * +good.count);
     });
+
+    if (cardTableTotal) {
+      cardTableTotal.textContent = `${totalSum}$`;
+    }
+    return totalSum;
   };
-  // отправка форм
+
+  // ф отправки форм
   //отправит на тестовое апи весь обьект карт
   const sendForm = () => {
     const cartArray = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+    const inputName = modalForm.querySelector('[name = "nameCustomer"]');
+    const inputPhone = modalForm.querySelector('[name = "phoneCustomer"]');
+
     fetch('https://jsonplaceholder.typicode.com/posts', {
       method: 'POST',
       body: JSON.stringify({
         cart: cartArray,
-        name: '',
-        phone: '',
+        name: inputName.value,
+        phone: inputPhone.value,
+        total: totalSum,
       }),
     }).then(() => {
-      cart.style.display = '';
+      setTimeout(() => {
+        cart.style.display = '';
+        localStorage.removeItem('cart');
+      }, 3000);
+      inputName.value = '';
+      inputPhone.value = '';
+      totalSum = 0;
     });
   };
+
   // кнопка отправки формы
   modalForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    console.log('submit');
     sendForm();
   });
 
