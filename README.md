@@ -6,6 +6,6 @@
 - НТМL
 - CSS
 - WebPack
-## View
 
-https://rus733.github.io/willberriesJS/
+
+
