@@ -111,28 +111,16 @@ export const cart = () => {
           deleteCartItem(good.id);
         }
       });
-      //подсчет суммы товаров в корзине
-      //return (totalSum = totalSum + Number(good.price) * Number(good.count));
     });
-
-    // if (cardTableTotal) {
-    //   cardTableTotal.textContent = `${totalSum}$`;
-    // }
-    // return totalSum;
+    //подсчет суммы товаров в корзине
     updateSum();
   };
 
-  // ф отправки форм
-  //отправит на тестовое апи весь обьект карт
+  // ф отправки форм на тестовое апи весь обьект карт
   const sendForm = () => {
-    const cartArray = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+    const cartArray = getFromStorage('cart');
     const inputName = modalForm.querySelector('[name = "nameCustomer"]');
     const inputPhone = modalForm.querySelector('[name = "phoneCustomer"]');
-    // let inputName = document.getElementsByName('nameCustomer'); //[0] as HTMLInputElement;
-    // console.log(' inputName: ', inputName[0].value);
-
-    // let inputPhone = document.getElementsByName('phoneCustomer'); //[0] as HTMLInputElement);
-    // console.log('inputPhone: ', inputPhone[0].value);
 
     fetch('https://jsonplaceholder.typicode.com/posts', {
       method: 'POST',
@@ -152,20 +140,15 @@ export const cart = () => {
       sum = 0;
     });
   };
-
   // кнопка отправки формы
   modalForm.addEventListener('submit', (e) => {
     e.preventDefault();
     sendForm();
   });
-
   //при открытии мобильного окна , необходимо вносить с таблицу данные из cart в localStoredg
   cartBtn.addEventListener('click', () => {
-    //получим данные из localStorage
-    const cartArray = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
-
+    const cartArray = getFromStorage('cart'); //получим данные из localStorage
     renderCartGoods(cartArray); //рендер товара в корзинеиз локал сторедж
-
     cart.style.display = 'flex';
   });
   //close popup
